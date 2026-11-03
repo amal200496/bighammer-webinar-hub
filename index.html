@@ -641,7 +641,10 @@ td .x:hover{color:var(--bad)}
     $('themeBtn').setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
     $('icoSun').hidden = !dark; $('icoMoon').hidden = dark;
   }
-  try { var saved = localStorage.getItem('bh-hub-theme'); if (saved === 'dark' || saved === 'light') { root.setAttribute('data-theme', saved); } } catch (e) {}
+  // Light is the default; dark only when the viewer chose it with the toggle.
+  var saved = null;
+  try { saved = localStorage.getItem('bh-hub-theme'); } catch (e) {}
+  root.setAttribute('data-theme', saved === 'dark' ? 'dark' : 'light');
   $('themeBtn').addEventListener('click', function () {
     var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
