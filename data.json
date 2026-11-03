@@ -1,0 +1,581 @@
+{
+  "webinars": [
+    {
+      "id": "w-dbx-uk",
+      "assessments": null,
+      "attended": null,
+      "broadcastId": "6942090",
+      "campaign": "web4-uk-22oct",
+      "durationMin": 60,
+      "name": "Databricks Cost Masterclass (UK)",
+      "notes": "Hosts: Srinath Reddy and Richard Lawrence.",
+      "region": "UK",
+      "regs": null,
+      "sqls": null,
+      "startISO": "2026-10-22T10:00:00.000Z",
+      "status": "Done",
+      "targetRegs": null,
+      "tz": "Europe/London"
+    },
+    {
+      "id": "w-dbx-us",
+      "assessments": null,
+      "attended": null,
+      "broadcastId": "6841508",
+      "campaign": "",
+      "durationMin": 45,
+      "name": "Databricks Cost Masterclass (US)",
+      "notes": "Hosts: Srinath Reddy and Richard Lawrence.",
+      "region": "US",
+      "regs": null,
+      "sqls": null,
+      "startISO": "2026-10-15T16:00:00.000Z",
+      "status": "Done",
+      "targetRegs": null,
+      "tz": "America/New_York"
+    },
+    {
+      "id": "w-infa",
+      "assessments": null,
+      "attended": null,
+      "broadcastId": "",
+      "campaign": "web5-infa-03dec",
+      "durationMin": 60,
+      "name": "Informatica Exit Plan",
+      "notes": "Run in-house by Appu. Offer: free Informatica Migration Assessment (to confirm). Speakers Srinath and Richard (to confirm).",
+      "region": "US + UK",
+      "regs": 0,
+      "sqls": null,
+      "startISO": "2026-12-03T16:00:00.000Z",
+      "status": "Planning",
+      "targetRegs": 250,
+      "tz": "America/New_York"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "uk-01",
+      "due": "2026-11-06",
+      "order": 1,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Record final registrations and attendance",
+      "webinarId": "w-dbx-uk",
+      "workstream": "Reporting"
+    },
+    {
+      "id": "uk-02",
+      "due": "2026-11-06",
+      "order": 2,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Delete internal test sign-ups from GHL and WebinarGeek",
+      "webinarId": "w-dbx-uk",
+      "workstream": "Tech"
+    },
+    {
+      "id": "us-01",
+      "due": "2026-11-06",
+      "order": 1,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Record final registrations and attendance",
+      "webinarId": "w-dbx-us",
+      "workstream": "Reporting"
+    },
+    {
+      "id": "us-02",
+      "due": "2026-11-06",
+      "order": 2,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Delete internal test sign-ups from GHL and WebinarGeek",
+      "webinarId": "w-dbx-us",
+      "workstream": "Tech"
+    },
+    {
+      "id": "inf-00a",
+      "due": "2026-11-04",
+      "order": -2,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Decide the webinar date, time and title",
+      "webinarId": "w-infa",
+      "workstream": "Strategy"
+    },
+    {
+      "id": "inf-00b",
+      "due": "2026-11-04",
+      "order": -1,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Define lead criteria for the list: Informatica signal, company size, regions, job titles, exclusions",
+      "webinarId": "w-infa",
+      "workstream": "Lead list"
+    },
+    {
+      "id": "inf-00c",
+      "due": "2026-11-05",
+      "order": 0,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Get LinkedIn Campaign Manager access for Appu",
+      "webinarId": "w-infa",
+      "workstream": "Paid"
+    },
+    {
+      "id": "inf-01",
+      "due": "2026-11-05",
+      "order": 1,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Get two lead list quotes against the agreed criteria and hand-check a 50-record sample",
+      "webinarId": "w-infa",
+      "workstream": "Lead list"
+    },
+    {
+      "id": "inf-02",
+      "due": "2026-11-04",
+      "order": 2,
+      "owner": "Appu",
+      "status": "Done",
+      "title": "5 outreach domains and 20 warmed mailboxes ready (Endy Inboxes)",
+      "webinarId": "w-infa",
+      "workstream": "Outbound"
+    },
+    {
+      "id": "inf-03",
+      "due": "2026-11-05",
+      "order": 3,
+      "owner": "Appu",
+      "status": "In progress",
+      "title": "Approve plan",
+      "webinarId": "w-infa",
+      "workstream": "Strategy"
+    },
+    {
+      "id": "inf-04",
+      "due": "2026-11-05",
+      "order": 4,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Confirm speakers and calendar holds (Srinath, Richard)",
+      "webinarId": "w-infa",
+      "workstream": "Strategy"
+    },
+    {
+      "id": "inf-05",
+      "due": "2026-11-05",
+      "order": 5,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Pull October masterclass actuals and recalibrate targets",
+      "webinarId": "w-infa",
+      "workstream": "Strategy"
+    },
+    {
+      "id": "inf-06",
+      "due": "2026-11-05",
+      "order": 6,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Name an owner for every role in this tracker",
+      "webinarId": "w-infa",
+      "workstream": "Strategy"
+    },
+    {
+      "id": "inf-07",
+      "due": "2026-11-06",
+      "order": 7,
+      "owner": "Srinath / delivery lead",
+      "status": "Not started",
+      "title": "Confirm Migration Assessment scope and capacity (25 slots)",
+      "webinarId": "w-infa",
+      "workstream": "Offer"
+    },
+    {
+      "id": "inf-08",
+      "due": "2026-11-06",
+      "order": 8,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Create WebinarGeek broadcast and share broadcast ID",
+      "webinarId": "w-infa",
+      "workstream": "Tech"
+    },
+    {
+      "id": "inf-09",
+      "due": "2026-11-06",
+      "order": 9,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Write WebinarGeek registration and thank-you page copy",
+      "webinarId": "w-infa",
+      "workstream": "Content"
+    },
+    {
+      "id": "inf-10",
+      "due": "2026-11-06",
+      "order": 10,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Buy, verify and dedupe the list; tag purchased-list-infa in GHL",
+      "webinarId": "w-infa",
+      "workstream": "Lead list"
+    },
+    {
+      "id": "inf-11",
+      "due": "2026-11-09",
+      "order": 11,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Build the WebinarGeek registration and thank-you pages",
+      "webinarId": "w-infa",
+      "workstream": "Tech"
+    },
+    {
+      "id": "inf-12",
+      "due": "2026-11-09",
+      "order": 12,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "GHL tag, custom fields, confirmation and reminder email workflows",
+      "webinarId": "w-infa",
+      "workstream": "Tech"
+    },
+    {
+      "id": "inf-13",
+      "due": "2026-11-09",
+      "order": 13,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "n8n: WebinarGeek registration to GHL sync and UTM mapping",
+      "webinarId": "w-infa",
+      "workstream": "Tech"
+    },
+    {
+      "id": "inf-14",
+      "due": "2026-11-09",
+      "order": 14,
+      "owner": "Designer",
+      "status": "Not started",
+      "title": "Creative: 4 ad images, 1 document ad, 6 post graphics, email header, OG image",
+      "webinarId": "w-infa",
+      "workstream": "Creative"
+    },
+    {
+      "id": "inf-15",
+      "due": "2026-11-09",
+      "order": 15,
+      "owner": "Legal adviser",
+      "status": "Not started",
+      "title": "Legal review: claims, privacy notice, opt-out text, UK cold email approach",
+      "webinarId": "w-infa",
+      "workstream": "Compliance"
+    },
+    {
+      "id": "inf-16",
+      "due": "2026-11-09",
+      "order": 16,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Upload purchased list as LinkedIn matched audience",
+      "webinarId": "w-infa",
+      "workstream": "Paid"
+    },
+    {
+      "id": "inf-17",
+      "due": "2026-11-09",
+      "order": 17,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Pick top 300 contacts for SDRs (cross-check job posts, Sales Navigator)",
+      "webinarId": "w-infa",
+      "workstream": "Lead list"
+    },
+    {
+      "id": "inf-18",
+      "due": "2026-11-10",
+      "order": 18,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "LinkedIn Lead Gen Form synced to GHL through n8n",
+      "webinarId": "w-infa",
+      "workstream": "Tech"
+    },
+    {
+      "id": "inf-19",
+      "due": "2026-11-10",
+      "order": 19,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Live test sign-up with internal addresses: WebinarGeek, n8n, GHL",
+      "webinarId": "w-infa",
+      "workstream": "Tech"
+    },
+    {
+      "id": "inf-20",
+      "due": "2026-11-10",
+      "order": 20,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "WebinarGeek registration page live; share the link for ads and emails",
+      "webinarId": "w-infa",
+      "workstream": "Tech"
+    },
+    {
+      "id": "inf-21",
+      "due": "2026-11-11",
+      "order": 21,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "LinkedIn ads live",
+      "webinarId": "w-infa",
+      "workstream": "Paid"
+    },
+    {
+      "id": "inf-22",
+      "due": "2026-11-11",
+      "order": 22,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Send invite email 1",
+      "webinarId": "w-infa",
+      "workstream": "Email"
+    },
+    {
+      "id": "inf-23",
+      "due": "2026-11-11",
+      "order": 23,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Announcement posts: company page, Srinath, Richard",
+      "webinarId": "w-infa",
+      "workstream": "Organic"
+    },
+    {
+      "id": "inf-24",
+      "due": "2026-11-12",
+      "order": 24,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "SDR personal-invite sequence starts (LinkedIn + email)",
+      "webinarId": "w-infa",
+      "workstream": "Demand gen"
+    },
+    {
+      "id": "inf-25",
+      "due": "2026-11-13",
+      "order": 25,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Partner and community push (Databricks user groups, newsletters)",
+      "webinarId": "w-infa",
+      "workstream": "Demand gen"
+    },
+    {
+      "id": "inf-26",
+      "due": "2026-11-13",
+      "order": 26,
+      "owner": "Srinath / delivery lead",
+      "status": "Not started",
+      "title": "Anonymised Informatica migration case from delivery",
+      "webinarId": "w-infa",
+      "workstream": "Content"
+    },
+    {
+      "id": "inf-27",
+      "due": "2026-11-17",
+      "order": 27,
+      "owner": "Srinath",
+      "status": "Not started",
+      "title": "Deck v1 and demo flow",
+      "webinarId": "w-infa",
+      "workstream": "Content"
+    },
+    {
+      "id": "inf-28",
+      "due": "2026-11-17",
+      "order": 28,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Send invite email 2",
+      "webinarId": "w-infa",
+      "workstream": "Email"
+    },
+    {
+      "id": "inf-29",
+      "due": "2026-11-18",
+      "order": 29,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Ads review: registration page vs Lead Gen Form, pause weakest variants",
+      "webinarId": "w-infa",
+      "workstream": "Paid"
+    },
+    {
+      "id": "inf-30",
+      "due": "2026-11-18",
+      "order": 30,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Cold email step 1 to purchased list",
+      "webinarId": "w-infa",
+      "workstream": "Outbound"
+    },
+    {
+      "id": "inf-31",
+      "due": "2026-11-23",
+      "order": 31,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Cold email step 2",
+      "webinarId": "w-infa",
+      "workstream": "Outbound"
+    },
+    {
+      "id": "inf-32",
+      "due": "2026-11-24",
+      "order": 32,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Send invite email 3 (before US Thanksgiving)",
+      "webinarId": "w-infa",
+      "workstream": "Email"
+    },
+    {
+      "id": "inf-33",
+      "due": "2026-11-25",
+      "order": 33,
+      "owner": "Srinath",
+      "status": "Not started",
+      "title": "Record backup demo video",
+      "webinarId": "w-infa",
+      "workstream": "Content"
+    },
+    {
+      "id": "inf-34",
+      "due": "2026-11-30",
+      "order": 34,
+      "owner": "Srinath / Richard",
+      "status": "Not started",
+      "title": "Final deck, polls and Q&A seed questions",
+      "webinarId": "w-infa",
+      "workstream": "Content"
+    },
+    {
+      "id": "inf-35",
+      "due": "2026-12-01",
+      "order": 35,
+      "owner": "Srinath, Richard, Appu",
+      "status": "Not started",
+      "title": "Dry run and tech check on WebinarGeek",
+      "webinarId": "w-infa",
+      "workstream": "Event"
+    },
+    {
+      "id": "inf-36",
+      "due": "2026-12-01",
+      "order": 36,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Send last-chance email and cold email step 3",
+      "webinarId": "w-infa",
+      "workstream": "Email"
+    },
+    {
+      "id": "inf-37",
+      "due": "2026-12-02",
+      "order": 37,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "24-hour reminder email",
+      "webinarId": "w-infa",
+      "workstream": "Email"
+    },
+    {
+      "id": "inf-38",
+      "due": "2026-12-03",
+      "order": 38,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "1-hour and \"we are live\" reminders",
+      "webinarId": "w-infa",
+      "workstream": "Email"
+    },
+    {
+      "id": "inf-39",
+      "due": "2026-12-03",
+      "order": 39,
+      "owner": "Srinath / Richard",
+      "status": "Not started",
+      "title": "Run the live webinar",
+      "webinarId": "w-infa",
+      "workstream": "Event"
+    },
+    {
+      "id": "inf-40",
+      "due": "2026-12-04",
+      "order": 40,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Replay emails; hand A-score leads to sales within 24 hours",
+      "webinarId": "w-infa",
+      "workstream": "Follow-up"
+    },
+    {
+      "id": "inf-41",
+      "due": "2026-12-08",
+      "order": 41,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Follow-up email 2 (assessment offer)",
+      "webinarId": "w-infa",
+      "workstream": "Follow-up"
+    },
+    {
+      "id": "inf-42",
+      "due": "2026-12-10",
+      "order": 42,
+      "owner": "Appu",
+      "status": "Not started",
+      "title": "Results report: registrations by channel, show rate, pipeline value",
+      "webinarId": "w-infa",
+      "workstream": "Strategy"
+    }
+  ],
+  "links": [
+    {
+      "id": "l-uk-page",
+      "kind": "page",
+      "label": "Landing page",
+      "order": 1,
+      "url": "https://uk.webinar.bighammerai.com/",
+      "webinarId": "w-dbx-uk"
+    },
+    {
+      "id": "l-uk-repo",
+      "kind": "repo",
+      "label": "GitHub repo",
+      "order": 2,
+      "url": "https://github.com/amal200496/bighammer-masterclass-uk",
+      "webinarId": "w-dbx-uk"
+    },
+    {
+      "id": "l-us-page",
+      "kind": "page",
+      "label": "Landing page",
+      "order": 1,
+      "url": "https://webinar.bighammerai.com/",
+      "webinarId": "w-dbx-us"
+    },
+    {
+      "id": "l-us-repo",
+      "kind": "repo",
+      "label": "GitHub repo",
+      "order": 2,
+      "url": "https://github.com/amal200496/bighammer-masterclass",
+      "webinarId": "w-dbx-us"
+    }
+  ]
+}

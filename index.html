@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>BigHammer Webinar Hub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&family=Poppins:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: ink top band with webinar cards as a horizontal rail, then a two-column workspace (selected webinar + cross-webinar "due soon" column). Square corners: BigHammer brand rule. */
+:root{
+  --bg:#F2F4FA; --surface:#FFFFFF; --field:#E9ECF6; --line:#D9DCEA;
+  --ink:#0D0D14; --text:#1C1C24; --muted:#5E5E70;
+  --brand:#5600EF; --brand-soft:#ECE3FF; --on-brand:#FFFFFF;
+  --band:#0D0D14; --band-text:#F2F4FA; --band-muted:#A9A9BC; --band-card:#1A1A26; --band-line:#2C2C3C;
+  --cta:#FCFF00; --on-cta:#0D0D14;
+  --good:#0F8A4A; --good-soft:#DDF5E7; --warn:#A35F00; --warn-soft:#FFF0D6; --bad:#B00057; --bad-soft:#FBE3EE; --idle:#5E5E70; --idle-soft:#ECEDF3;
+  --signal:#00C46A;
+  --f-display:"Epilogue", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Poppins", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0B0B12; --surface:#14141E; --field:#1D1D2A; --line:#2A2A3A;
+  --ink:#F2F4FA; --text:#E7E8F1; --muted:#9A9AB0;
+  --brand:#9B6BFF; --brand-soft:#241A3F; --on-brand:#0B0B12;
+  --band:#050509; --band-text:#F2F4FA; --band-muted:#9A9AB0; --band-card:#15151F; --band-line:#2A2A3A;
+  --cta:#FCFF00; --on-cta:#0D0D14;
+  --good:#3DDC8A; --good-soft:#12301F; --warn:#FFB547; --warn-soft:#33260F; --bad:#FF5FA2; --bad-soft:#3A1426; --idle:#9A9AB0; --idle-soft:#20202C;
+  --signal:#00FF89; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0B0B12; --surface:#14141E; --field:#1D1D2A; --line:#2A2A3A;
+  --ink:#F2F4FA; --text:#E7E8F1; --muted:#9A9AB0;
+  --brand:#9B6BFF; --brand-soft:#241A3F; --on-brand:#0B0B12;
+  --band:#050509; --band-text:#F2F4FA; --band-muted:#9A9AB0; --band-card:#15151F; --band-line:#2A2A3A;
+  --cta:#FCFF00; --on-cta:#0D0D14;
+  --good:#3DDC8A; --good-soft:#12301F; --warn:#FFB547; --warn-soft:#33260F; --bad:#FF5FA2; --bad-soft:#3A1426; --idle:#9A9AB0; --idle-soft:#20202C;
+  --signal:#00FF89; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--text); font-family:var(--f-body); font-size:14px; line-height:1.5}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--band)}
+h1,h2,h3{font-family:var(--f-display); color:inherit; margin:0; text-wrap:balance; letter-spacing:-.01em}
+button,input,select,textarea{font:inherit; color:inherit}
+a{color:var(--brand)}
+.wrap{padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); max-width:1320px; margin:0 auto}
+.num{font-variant-numeric:tabular-nums}
+.label{font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+:focus-visible{outline:3px solid var(--brand); outline-offset:2px}
+
+/* ---------- band ---------- */
+.band{background:var(--band); color:var(--band-text)}
+.band .wrap{padding-block:20px 22px; display:grid; gap:18px}
+.top{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px}
+.brand{display:flex; align-items:center; gap:12px}
+.mark{width:36px; height:36px; display:grid; place-items:center; background:var(--signal); color:#0D0D14; font-family:var(--f-display); font-weight:800; font-size:15px}
+.brand h1{font-size:22px; font-weight:800}
+.brand p{margin:0; color:var(--band-muted); font-size:13px}
+.today{font-family:var(--f-mono); font-size:12px; color:var(--band-muted)}
+.rail{display:grid; grid-auto-flow:column; grid-auto-columns:minmax(250px, 300px); gap:12px; overflow-x:auto; padding-bottom:4px; scrollbar-width:thin}
+.wcard{all:unset; box-sizing:border-box; cursor:pointer; display:grid; gap:10px; padding:14px 16px; background:var(--band-card); border:1px solid var(--band-line); color:var(--band-text); min-width:0}
+.wcard:hover{border-color:var(--band-muted)}
+.wcard:focus-visible{outline:3px solid var(--signal); outline-offset:2px}
+.wcard[aria-current="true"]{border-color:var(--signal); box-shadow:4px 4px 0 var(--signal)}
+.wcard .row{display:flex; justify-content:space-between; align-items:center; gap:8px}
+.wcard h2{font-size:15px; font-weight:700; line-height:1.3}
+.wcard .when{font-size:12.5px; color:var(--band-muted)}
+.wcard .bar{height:6px; background:var(--band-line); position:relative}
+.wcard .bar i{position:absolute; inset:0 auto 0 0; background:var(--signal)}
+.wcard .meta{display:flex; justify-content:space-between; font-size:12px; color:var(--band-muted)}
+.wcard.add{place-content:center; text-align:center; border-style:dashed; color:var(--band-muted); font-weight:600}
+.count{font-family:var(--f-mono); font-size:11.5px; padding:2px 6px; background:var(--band-line); color:var(--band-text); white-space:nowrap}
+
+.topright{display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px}
+.themebtn{display:inline-flex; align-items:center; gap:8px; min-height:36px; padding:6px 12px; background:transparent; color:var(--band-text); border:1px solid var(--band-muted); cursor:pointer; font-weight:600; font-size:13px}
+.themebtn:hover{background:var(--band-card); border-color:var(--signal)}
+.themebtn:focus-visible{outline:3px solid var(--signal); outline-offset:2px}
+
+/* ---------- infrastructure ---------- */
+.infra{margin-bottom:56px}
+.infra table{min-width:560px}
+.infra td{padding:9px 10px}
+.infra td.nm{font-weight:600; color:var(--ink); width:28%}
+.infra td:last-child{width:1%; white-space:nowrap}
+.infra tr.grp th{background:var(--bg); color:var(--ink); padding-top:12px}
+.infra code{font-family:var(--f-mono); font-size:12px; background:var(--field); padding:0 4px}
+
+/* ---------- pills ---------- */
+.pill{display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; padding:2px 8px; white-space:nowrap}
+.pill::before{content:""; width:7px; height:7px; background:currentColor}
+.s-planning{background:var(--brand-soft); color:var(--brand)}
+.s-promoting{background:var(--warn-soft); color:var(--warn)}
+.s-live{background:var(--bad-soft); color:var(--bad)}
+.s-done{background:var(--good-soft); color:var(--good)}
+.t-notstarted{background:var(--idle-soft); color:var(--idle)}
+.t-inprogress{background:var(--brand-soft); color:var(--brand)}
+.t-blocked{background:var(--bad-soft); color:var(--bad)}
+.t-done{background:var(--good-soft); color:var(--good)}
+
+/* ---------- workspace ---------- */
+.work{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:20px; padding-block:22px 48px; align-items:start}
+@media (max-width:980px){ .work{grid-template-columns:minmax(0,1fr)} }
+.panel{background:var(--surface); border:1px solid var(--line); padding:18px}
+.stack{display:grid; gap:20px; min-width:0}
+
+.whead{display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px 20px; align-items:flex-start}
+.whead h2{font-size:24px; font-weight:800; color:var(--ink)}
+.whead .times{margin-top:4px; color:var(--muted); font-size:13px}
+.whead .times b{color:var(--text); font-weight:600}
+.actions{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.btn{display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:6px 14px; border:1px solid var(--line); background:var(--surface); cursor:pointer; font-weight:600; font-size:13px; color:var(--text)}
+.btn:hover{background:var(--field)}
+.btn.primary{background:var(--cta); color:var(--on-cta); border-color:var(--cta)}
+.btn.primary:hover{box-shadow:3px 3px 0 var(--ink)}
+.btn.danger{color:var(--bad)}
+.btn.ghost{border-color:transparent; background:transparent}
+.btn[disabled]{opacity:.5; cursor:not-allowed}
+
+.facts{display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:14px; font-size:12.5px; color:var(--muted)}
+.facts code{font-family:var(--f-mono); font-size:12px; color:var(--text); background:var(--field); padding:1px 5px}
+
+.kpis{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:16px}
+@media (max-width:720px){ .kpis{grid-template-columns:repeat(2, minmax(0,1fr))} }
+.kpi{background:var(--surface); padding:12px 14px; display:grid; gap:2px; min-width:0}
+.kpi .v{font-family:var(--f-display); font-size:24px; font-weight:800; color:var(--ink); line-height:1.15}
+.kpi .v small{font-family:var(--f-body); font-size:12px; font-weight:500; color:var(--muted)}
+.kpi .sub{font-size:12px; color:var(--muted)}
+.kpi .meter{height:4px; background:var(--field); margin-top:6px; position:relative}
+.kpi .meter i{position:absolute; inset:0 auto 0 0; background:var(--brand)}
+
+/* tasks */
+.sechead{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px}
+.sechead h3{font-size:17px; font-weight:700; color:var(--ink)}
+.filters{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+.chip{all:unset; cursor:pointer; font-size:12.5px; font-weight:600; padding:5px 10px; background:var(--field); color:var(--text)}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.chip:focus-visible{outline:3px solid var(--brand); outline-offset:2px}
+.chip .num{opacity:.7; margin-left:4px}
+select.inp, input.inp{background:var(--field); border:1px solid transparent; padding:6px 8px; min-height:34px; min-width:0}
+select.inp:hover, input.inp:hover{border-color:var(--line)}
+.tablewrap{overflow-x:auto; border:1px solid var(--line)}
+table{border-collapse:collapse; width:100%; min-width:760px}
+th{font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); text-align:left; padding:8px 10px; background:var(--field); border-bottom:1px solid var(--line); white-space:nowrap}
+td{padding:6px 10px; border-bottom:1px solid var(--line); vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tr.done td.title{color:var(--muted); text-decoration:line-through}
+tr.overdue td.due{color:var(--bad); font-weight:600}
+tr.overdue td:first-child{box-shadow:inset 3px 0 0 var(--bad)}
+td.title{min-width:320px}
+td.title input.inp{text-overflow:ellipsis}
+td.due{white-space:nowrap}
+td select.inp, td input.inp{width:100%; background:transparent}
+td select.inp:focus, td input.inp:focus{background:var(--field)}
+td.n{color:var(--muted); font-family:var(--f-mono); font-size:12px; width:1%}
+td .x{all:unset; cursor:pointer; color:var(--muted); padding:4px 6px}
+td .x:hover{color:var(--bad)}
+.addrow{display:grid; grid-template-columns:minmax(0,2.2fr) minmax(0,1fr) minmax(0,1fr) 150px auto; gap:8px; margin-top:12px}
+@media (max-width:720px){ .addrow{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} .addrow .title-in{grid-column:1/-1} }
+.empty{padding:28px 16px; text-align:center; color:var(--muted)}
+
+/* side */
+.side{display:grid; gap:20px; min-width:0}
+.duelist{display:grid; gap:0; margin:0; padding:0; list-style:none}
+.duelist li{display:grid; grid-template-columns:62px minmax(0,1fr); gap:10px; padding:9px 0; border-top:1px solid var(--line)}
+.duelist li:first-child{border-top:0}
+.duelist .d{font-family:var(--f-mono); font-size:12px; color:var(--muted)}
+.duelist .d.late{color:var(--bad); font-weight:600}
+.duelist .t{font-size:13px; line-height:1.35}
+.duelist .w{font-size:11.5px; color:var(--muted)}
+.links{display:grid; gap:0; margin:0; padding:0; list-style:none}
+.links li{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-top:1px solid var(--line)}
+.links li:first-child{border-top:0}
+.links a{font-weight:600; text-decoration:none; overflow-wrap:anywhere}
+.links a:hover{text-decoration:underline}
+.links .k{font-size:11.5px; color:var(--muted)}
+.linkform{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px; margin-top:12px}
+.linkform input:last-of-type{grid-column:1/-1}
+.linkform .btn{grid-column:1/-1; justify-content:center}
+
+/* editor */
+.editor{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; margin-top:16px; padding-top:16px; border-top:1px solid var(--line)}
+@media (max-width:720px){ .editor{grid-template-columns:minmax(0,1fr)} }
+.editor label{display:grid; gap:4px; font-size:12px; font-weight:600; color:var(--muted)}
+.editor .wide{grid-column:1/-1}
+.editor .btns{grid-column:1/-1; display:flex; gap:8px; flex-wrap:wrap}
+.note{font-size:12.5px; color:var(--muted)}
+.banner{padding:10px 14px; background:var(--warn-soft); color:var(--warn); font-weight:600; font-size:13px}
+.confirm{display:inline-flex; gap:6px; align-items:center; font-size:12.5px}
+@media (prefers-reduced-motion: no-preference){ .wcard,.btn,.chip{transition:background-color .15s, border-color .15s, box-shadow .15s} }
+</style>
+
+<div class="band">
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">BH</span>
+        <div><h1>Webinar Hub</h1><p>BigHammer.ai webinars: plans, tasks, links and results</p></div>
+      </div>
+      <div class="topright">
+        <span class="today" id="today"></span>
+        <button class="themebtn" id="themeBtn" type="button" aria-label="Switch theme">
+          <svg id="icoSun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>
+          <svg id="icoMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>
+          <span id="themeLabel">Dark</span>
+        </button>
+      </div>
+    </div>
+    <div class="rail" id="rail" role="list" aria-label="Webinars"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <p class="banner" id="banner" hidden></p>
+  <div class="work">
+    <div class="stack">
+      <section class="panel" id="wpanel" aria-live="polite">
+        <div class="empty" id="wempty">Loading webinars…</div>
+        <div id="wbody" hidden>
+          <div class="whead">
+            <div>
+              <div class="actions"><span class="pill" id="wstatus"></span><span class="note" id="wcountdown"></span></div>
+              <h2 id="wname"></h2>
+              <p class="times" id="wtimes"></p>
+            </div>
+            <div class="actions edit-only">
+              <button class="btn" id="editBtn" type="button">Edit details</button>
+            </div>
+          </div>
+          <div class="facts" id="wfacts"></div>
+          <div class="kpis" id="kpis"></div>
+          <form class="editor" id="editor" hidden>
+            <label>Name<input class="inp" id="e-name" required></label>
+            <label>Status<select class="inp" id="e-status"><option>Planning</option><option>Promoting</option><option>Live</option><option>Done</option></select></label>
+            <label>Region<input class="inp" id="e-region" placeholder="US, UK, US + UK"></label>
+            <label>Date<input class="inp" id="e-date" type="date" required></label>
+            <label>Start time<input class="inp" id="e-time" type="time" required></label>
+            <label>Time zone<select class="inp" id="e-tz"><option value="America/New_York">New York (ET)</option><option value="Europe/London">London (UK)</option><option value="Asia/Kolkata">India (IST)</option></select></label>
+            <label>Duration (min)<input class="inp num" id="e-dur" type="number" min="15" step="5"></label>
+            <label>Campaign code<input class="inp" id="e-campaign" placeholder="web5-infa-03dec"></label>
+            <label>WebinarGeek broadcast ID<input class="inp" id="e-broadcast" inputmode="numeric"></label>
+            <label>Registration target<input class="inp num" id="e-target" type="number" min="0"></label>
+            <label>Registrations<input class="inp num" id="e-regs" type="number" min="0"></label>
+            <label>Attended live<input class="inp num" id="e-att" type="number" min="0"></label>
+            <label>Assessments / demos booked<input class="inp num" id="e-ass" type="number" min="0"></label>
+            <label>Qualified opportunities<input class="inp num" id="e-sql" type="number" min="0"></label>
+            <label class="wide">Notes<input class="inp" id="e-notes" placeholder="One line: speakers, offer, anything the team should know"></label>
+            <div class="btns">
+              <button class="btn primary" type="submit" id="e-save">Save</button>
+              <button class="btn" type="button" id="e-cancel">Cancel</button>
+              <span class="confirm" id="delWrap"><button class="btn danger ghost" type="button" id="e-del">Delete webinar</button></span>
+              <span class="note" id="e-msg"></span>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="panel" id="tpanel" hidden>
+        <div class="sechead">
+          <h3>Tasks</h3>
+          <div class="filters" id="filters">
+            <button class="chip" type="button" data-f="open" aria-pressed="true">Open</button>
+            <button class="chip" type="button" data-f="week" aria-pressed="false">Due in 7 days</button>
+            <button class="chip" type="button" data-f="late" aria-pressed="false">Overdue</button>
+            <button class="chip" type="button" data-f="all" aria-pressed="false">All</button>
+            <label class="sr"><span class="label" style="position:absolute;left:-9999px">Workstream</span><select class="inp" id="wsFilter" aria-label="Filter by workstream"><option value="">All workstreams</option></select></label>
+          </div>
+        </div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>#</th><th>Task</th><th>Workstream</th><th>Owner</th><th>Due</th><th>Status</th><th><span style="position:absolute;left:-9999px">Delete</span></th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <form class="addrow edit-only" id="addTask">
+          <input class="inp title-in" id="nt-title" placeholder="New task" aria-label="New task" required>
+          <input class="inp" id="nt-ws" placeholder="Workstream" aria-label="Workstream" list="wslist">
+          <input class="inp" id="nt-owner" placeholder="Owner" aria-label="Owner">
+          <input class="inp" id="nt-due" type="date" aria-label="Due date">
+          <button class="btn primary" type="submit">Add task</button>
+        </form>
+        <datalist id="wslist"></datalist>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="panel">
+        <div class="sechead"><h3>Due soon, all webinars</h3><span class="count" id="dueCount" style="background:var(--field);color:var(--text)"></span></div>
+        <ul class="duelist" id="duelist"></ul>
+      </section>
+      <section class="panel" id="lpanel" hidden>
+        <div class="sechead"><h3>Links</h3></div>
+        <ul class="links" id="links"></ul>
+        <form class="linkform edit-only" id="addLink">
+          <input class="inp" id="nl-label" placeholder="Label" aria-label="Link label" required>
+          <input class="inp" id="nl-kind" placeholder="Type (plan, page, repo)" aria-label="Link type">
+          <input class="inp" id="nl-url" type="url" placeholder="https://…" aria-label="Link URL" required>
+          <button class="btn" type="submit">Add link</button>
+        </form>
+      </section>
+    </aside>
+  </div>
+
+  <section class="panel infra" aria-labelledby="infraH">
+    <div class="sechead"><h3 id="infraH">Infrastructure</h3><span class="note">Run in-house by Appu, Growth Marketing Manager</span></div>
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr class="grp"><th colspan="3">Outreach</th></tr>
+          <tr><td class="nm">Google Workspace mailboxes</td><td>5 outreach domains, 20 warmed mailboxes, provisioned and managed by Endy Inboxes</td><td><span class="pill t-done">Ready</span></td></tr>
+          <tr><td class="nm">Instantly.ai</td><td>Cold email sequences, a second entry point into the funnel</td><td></td></tr>
+          <tr><td class="nm">Cloudflare + Namecheap</td><td>DNS and domain registration for all 5 sending domains</td><td></td></tr>
+          <tr><td class="nm">HeyReach</td><td>LinkedIn outreach campaigns: connection requests and message sequences</td><td></td></tr>
+          <tr><td class="nm">LinkedIn organic content</td><td>Posts from the company page and speakers</td><td></td></tr>
+          <tr><td class="nm">LinkedIn Ads</td><td>Paid campaigns through Campaign Manager</td><td><span class="pill t-blocked">Appu needs access</span></td></tr>
+          <tr class="grp"><th colspan="3">The webinar</th></tr>
+          <tr><td class="nm">WebinarGeek</td><td>Core platform: registration page, live or automated broadcast, reminders, replays, attendee reporting</td><td><span class="pill t-inprogress">Broadcast by 6 Nov</span></td></tr>
+          <tr class="grp"><th colspan="3">Capturing and routing leads</th></tr>
+          <tr><td class="nm">GoHighLevel</td><td>Registrants land as CRM contacts and run through pipelines and follow-up workflows</td><td><span class="pill t-inprogress">Set up by 9 Nov</span></td></tr>
+          <tr><td class="nm">n8n</td><td>Registration to GHL sync, reminder automation, reporting pulls</td><td><span class="pill t-inprogress">Set up by 9 Nov</span></td></tr>
+          <tr class="grp"><th colspan="3">Scheduling</th></tr>
+          <tr><td class="nm">Calendly</td><td>Booking links for sales calls after the webinar</td><td></td></tr>
+          <tr class="grp"><th colspan="3">Tracking</th></tr>
+          <tr><td class="nm">Google Analytics + internal dashboard</td><td>Traffic and conversion tracking across the funnel</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var STATUSES = ['Not started', 'In progress', 'Blocked', 'Done'];
+  var state = { webinars: [], tasks: [], links: [], sel: null, filter: 'open', ws: '', canWrite: true, ready: { w: false, t: false, l: false } };
+  var db = null;
+
+  try { state.sel = localStorage.getItem('bh-hub-sel'); } catch (e) {}
+
+  /* ---------- helpers ---------- */
+  function el(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    if (attrs) { Object.keys(attrs).forEach(function (k) {
+      if (k === 'text') { n.textContent = attrs[k]; }
+      else if (k === 'cls') { n.className = attrs[k]; }
+      else if (k.slice(0, 2) === 'on') { n.addEventListener(k.slice(2), attrs[k]); }
+      else if (attrs[k] !== null && attrs[k] !== undefined && attrs[k] !== false) { n.setAttribute(k, attrs[k] === true ? '' : attrs[k]); }
+    }); }
+    (kids || []).forEach(function (c) { if (c != null) { n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); } });
+    return n;
+  }
+  function todayISO() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function addDays(iso, n) { var d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function shortDate(iso) { if (!iso) { return ''; } var d = new Date(iso + 'T12:00:00'); return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }); }
+  function fmtZone(iso, tz) { var d = new Date(iso); return d.toLocaleString('en-GB', { timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true }).replace(' ', '').toUpperCase().replace('AM', ' AM').replace('PM', ' PM'); }
+  function fmtLongDate(iso, tz) { return new Date(iso).toLocaleDateString('en-GB', { timeZone: tz, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+  function zoneOffsetMs(tz, utcMs) {
+    var p = {}; new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+      .formatToParts(new Date(utcMs)).forEach(function (x) { p[x.type] = x.value; });
+    return Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second) - utcMs;
+  }
+  function localToUTC(date, time, tz) {
+    var guess = Date.parse(date + 'T' + time + ':00Z');
+    var t = guess - zoneOffsetMs(tz, guess);
+    t = guess - zoneOffsetMs(tz, t);
+    return new Date(t).toISOString();
+  }
+  function partsIn(iso, tz) {
+    var p = {}; new Intl.DateTimeFormat('en-CA', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
+      .formatToParts(new Date(iso)).forEach(function (x) { p[x.type] = x.value; });
+    return { date: p.year + '-' + p.month + '-' + p.day, time: p.hour + ':' + p.minute };
+  }
+  function num(v) { return v === '' || v == null ? null : Number(v); }
+  function statusCls(s) { return 's-' + String(s || 'planning').toLowerCase(); }
+  function taskCls(s) { return 't-' + String(s || 'Not started').toLowerCase().replace(/\s+/g, ''); }
+  function daysUntil(iso) { return Math.ceil((Date.parse(iso) - Date.now()) / 864e5); }
+  function sortW(a, b) { return String(a.startISO || '').localeCompare(String(b.startISO || '')); }
+  function tasksOf(wid) { return state.tasks.filter(function (t) { return t.webinarId === wid; }); }
+  function isLate(t) { return t.status !== 'Done' && t.due && t.due < todayISO(); }
+  function showError(msg) { var b = $('banner'); b.textContent = msg; b.hidden = !msg; }
+  function writeErr(e) {
+    if (e && e.code === 'invalid_argument') { state.canWrite = false; applyWriteMode(); showError('You can view this hub but not change it. Ask the owner for Contributor access.'); }
+    else if (e && e.code === 'quota_exceeded') { showError('The hub is full. Delete old tasks or links, then try again.'); }
+    else { showError('That change did not save. Check your connection and try again.'); }
+  }
+  async function write(fn) { if (!db) { return; } try { await fn(); showError(''); } catch (e) { writeErr(e); } }
+
+  $('today').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  /* ---------- render: rail ---------- */
+  function renderRail() {
+    var rail = $('rail'); rail.textContent = '';
+    var ws = state.webinars.slice().sort(sortW);
+    ws.forEach(function (w) {
+      var ts = tasksOf(w.id), done = ts.filter(function (t) { return t.status === 'Done'; }).length;
+      var late = ts.filter(isLate).length;
+      var pct = ts.length ? Math.round(done / ts.length * 100) : 0;
+      var d = w.startISO ? daysUntil(w.startISO) : null;
+      var when = w.startISO ? fmtLongDate(w.startISO, w.tz || 'America/New_York') + ', ' + fmtZone(w.startISO, w.tz || 'America/New_York') : 'Date not set';
+      var card = el('button', { cls: 'wcard', type: 'button', role: 'listitem', 'aria-current': String(w.id === state.sel), onclick: function () { select(w.id); } }, [
+        el('div', { cls: 'row' }, [el('span', { cls: 'pill ' + statusCls(w.status), text: w.status || 'Planning' }), el('span', { cls: 'count num', text: d == null ? '' : d > 0 ? 'in ' + d + (d === 1 ? ' day' : ' days') : d === 0 ? 'today' : 'held' })]),
+        el('h2', { text: w.name || 'Untitled webinar' }),
+        el('div', { cls: 'when', text: when }),
+        el('div', { cls: 'bar', 'aria-hidden': 'true' }, [el('i', { style: 'width:' + pct + '%' })]),
+        el('div', { cls: 'meta num' }, [el('span', { text: done + ' of ' + ts.length + ' tasks done' }), el('span', { text: late ? late + ' overdue' : '' })])
+      ]);
+      rail.appendChild(card);
+    });
+    if (state.canWrite && db) {
+      rail.appendChild(el('button', { cls: 'wcard add', type: 'button', onclick: newWebinar, text: '+ New webinar' }));
+    }
+  }
+
+  /* ---------- render: selected webinar ---------- */
+  function current() { return state.webinars.find(function (w) { return w.id === state.sel; }) || null; }
+  function renderWebinar() {
+    var w = current();
+    $('wempty').hidden = !!w; $('wbody').hidden = !w; $('tpanel').hidden = !w; $('lpanel').hidden = !w;
+    if (!w) {
+      $('wempty').textContent = state.loadErr ? state.loadErr : state.ready.w ? (state.webinars.length ? 'Pick a webinar above.' : 'No webinars yet. Use "+ New webinar" to add the first one.') : 'Loading webinars…';
+      return;
+    }
+    var tz = w.tz || 'America/New_York';
+    $('wstatus').className = 'pill ' + statusCls(w.status); $('wstatus').textContent = w.status || 'Planning';
+    var d = w.startISO ? daysUntil(w.startISO) : null;
+    $('wcountdown').textContent = d == null ? '' : d > 0 ? d + ' days to go' : d === 0 ? 'Today' : 'Held ' + (-d) + ' days ago';
+    $('wname').textContent = w.name || 'Untitled webinar';
+    var times = $('wtimes'); times.textContent = '';
+    if (w.startISO) {
+      times.appendChild(el('b', { text: fmtLongDate(w.startISO, tz) }));
+      times.appendChild(document.createTextNode(' · ' + fmtZone(w.startISO, 'America/New_York') + ' ET · ' + fmtZone(w.startISO, 'Europe/London') + ' UK · ' + fmtZone(w.startISO, 'Asia/Kolkata') + ' IST' + (w.durationMin ? ' · ' + w.durationMin + ' min' : '')));
+    }
+    var f = $('wfacts'); f.textContent = '';
+    function fact(label, val) { if (val) { f.appendChild(el('span', null, [label + ' ', el('code', { text: String(val) })])); } }
+    fact('Region', w.region); fact('Campaign', w.campaign); fact('Broadcast ID', w.broadcastId);
+    if (w.notes) { f.appendChild(el('span', { text: w.notes })); }
+
+    var k = $('kpis'); k.textContent = '';
+    function kpi(label, v, sub, ratio) {
+      var box = el('div', { cls: 'kpi' }, [el('span', { cls: 'label', text: label }), el('span', { cls: 'v num' }, [v == null ? '–' : String(v)]), sub ? el('span', { cls: 'sub num', text: sub }) : null]);
+      if (ratio != null) { box.appendChild(el('div', { cls: 'meter', 'aria-hidden': 'true' }, [el('i', { style: 'width:' + Math.min(100, Math.round(ratio * 100)) + '%' })])); }
+      k.appendChild(box);
+    }
+    var regs = w.regs, tgt = w.targetRegs;
+    kpi('Registrations', regs != null ? regs.toLocaleString('en-US') : null, tgt ? 'target ' + tgt.toLocaleString('en-US') : 'no target set', tgt && regs != null ? regs / tgt : null);
+    kpi('Attended live', w.attended, regs && w.attended != null ? Math.round(w.attended / regs * 100) + '% show rate' : 'enter after the event');
+    kpi('Assessments booked', w.assessments, null);
+    kpi('Qualified opps', w.sqls, null);  }
+
+  /* ---------- render: tasks ---------- */
+  function renderTasks() {
+    var w = current(); if (!w) { return; }
+    var all = tasksOf(w.id).sort(function (a, b) { return String(a.due || '9999').localeCompare(String(b.due || '9999')) || (a.order || 0) - (b.order || 0); });
+    var t0 = todayISO(), wk = addDays(t0, 7);
+    var counts = { open: 0, week: 0, late: 0, all: all.length };
+    all.forEach(function (t) { if (t.status !== 'Done') { counts.open++; if (t.due && t.due <= wk) { counts.week++; } if (isLate(t)) { counts.late++; } } });
+    Array.prototype.forEach.call($('filters').querySelectorAll('.chip'), function (c) {
+      c.setAttribute('aria-pressed', String(c.dataset.f === state.filter));
+      var base = c.dataset.base || (c.dataset.base = c.textContent);
+      c.textContent = base; c.appendChild(el('span', { cls: 'num', text: String(counts[c.dataset.f]) }));
+    });
+    var wsSel = $('wsFilter'), wsVals = Array.from(new Set(all.map(function (t) { return t.workstream; }).filter(Boolean))).sort();
+    var keep = state.ws; wsSel.textContent = ''; wsSel.appendChild(el('option', { value: '', text: 'All workstreams' }));
+    wsVals.forEach(function (v) { wsSel.appendChild(el('option', { value: v, text: v })); });
+    wsSel.value = wsVals.indexOf(keep) >= 0 ? keep : ''; state.ws = wsSel.value;
+    var dl = $('wslist'); dl.textContent = ''; wsVals.forEach(function (v) { dl.appendChild(el('option', { value: v })); });
+
+    var rows = all.filter(function (t) {
+      if (state.ws && t.workstream !== state.ws) { return false; }
+      if (state.filter === 'open') { return t.status !== 'Done'; }
+      if (state.filter === 'week') { return t.status !== 'Done' && t.due && t.due <= wk; }
+      if (state.filter === 'late') { return isLate(t); }
+      return true;
+    });
+    var tb = $('tbody'); tb.textContent = '';
+    if (!rows.length) { tb.appendChild(el('tr', null, [el('td', { colspan: '7', cls: 'empty', text: all.length ? 'Nothing here for this filter.' : 'No tasks yet. Add the first one below.' })])); return; }
+    var ro = !state.canWrite;
+    rows.forEach(function (t, i) {
+      var ref = function () { return db.collection('tasks').doc(t.id); };
+      function cellInput(field, type, label) {
+        if (ro) { return el('span', { text: type === 'date' ? shortDate(t[field]) : (t[field] || '') }); }
+        var inp = el('input', { cls: 'inp', type: type || 'text', value: t[field] || '', 'aria-label': label, title: type === 'date' ? null : (t[field] || null), disabled: ro });
+        inp.addEventListener('input', function () { if (type !== 'date') { inp.title = inp.value; } });
+        inp.addEventListener('change', function () { var v = inp.value.trim(), o = {}; o[field] = v; if (v !== (t[field] || '')) { write(function () { return ref().update(o); }); } });
+        return inp;
+      }
+      var sel = ro ? el('span', { cls: 'pill ' + taskCls(t.status), text: t.status || 'Not started' }) : el('select', { cls: 'inp pill ' + taskCls(t.status), 'aria-label': 'Status' });
+      if (!ro) {
+        STATUSES.forEach(function (s) { sel.appendChild(el('option', { value: s, text: s, selected: s === (t.status || 'Not started') })); });
+        sel.addEventListener('change', function () { var v = sel.value; write(function () { return ref().update({ status: v }); }); });
+      }
+      var del = ro ? el('span') : el('button', { cls: 'x', type: 'button', 'aria-label': 'Delete task: ' + t.title, text: '✕', onclick: function () {
+        var td = del.parentNode; td.textContent = '';
+        td.appendChild(el('span', { cls: 'confirm' }, [
+          el('button', { cls: 'btn danger', type: 'button', text: 'Delete', onclick: function () { write(function () { return ref().delete(); }); } }),
+          el('button', { cls: 'btn ghost', type: 'button', text: 'Keep', onclick: renderTasks })
+        ]));
+      } });
+      var tr = el('tr', { cls: (t.status === 'Done' ? 'done ' : '') + (isLate(t) ? 'overdue' : '') }, [
+        el('td', { cls: 'n num', text: String(i + 1) }),
+        el('td', { cls: 'title' }, [cellInput('title', 'text', 'Task')]),
+        el('td', null, [cellInput('workstream', 'text', 'Workstream')]),
+        el('td', null, [cellInput('owner', 'text', 'Owner')]),
+        el('td', { cls: 'due' }, [cellInput('due', 'date', 'Due date')]),
+        el('td', null, [sel]),
+        el('td', null, [del])
+      ]);
+      tb.appendChild(tr);
+    });
+  }
+
+  /* ---------- render: due soon (all webinars) ---------- */
+  function renderDue() {
+    var t0 = todayISO(), wk = addDays(t0, 7);
+    var names = {}; state.webinars.forEach(function (w) { names[w.id] = w.name; });
+    var due = state.tasks.filter(function (t) { return t.status !== 'Done' && t.due && t.due <= wk && names[t.webinarId]; })
+      .sort(function (a, b) { return a.due.localeCompare(b.due); });
+    $('dueCount').textContent = String(due.length);
+    var ul = $('duelist'); ul.textContent = '';
+    if (!due.length) { ul.appendChild(el('li', { cls: 'empty', style: 'display:block', text: state.ready.t ? 'Nothing due in the next 7 days.' : 'Loading…' })); return; }
+    due.slice(0, 25).forEach(function (t) {
+      ul.appendChild(el('li', null, [
+        el('span', { cls: 'd num' + (t.due < t0 ? ' late' : ''), text: t.due < t0 ? 'Late' : shortDate(t.due).replace(',', '') }),
+        el('div', null, [el('div', { cls: 't', text: t.title }), el('div', { cls: 'w', text: names[t.webinarId] + (t.owner ? ' · ' + t.owner : '') + (t.due < t0 ? ' · was due ' + shortDate(t.due) : '') })])
+      ]));
+    });
+    if (due.length > 25) { ul.appendChild(el('li', { cls: 'note', style: 'display:block', text: '+ ' + (due.length - 25) + ' more' })); }
+  }
+
+  /* ---------- render: links ---------- */
+  function renderLinks() {
+    var w = current(); if (!w) { return; }
+    var ls = state.links.filter(function (l) { return l.webinarId === w.id; }).sort(function (a, b) { return (a.order || 0) - (b.order || 0) || String(a.label).localeCompare(String(b.label)); });
+    var ul = $('links'); ul.textContent = '';
+    if (!ls.length) { ul.appendChild(el('li', { cls: 'note', text: 'No links yet: add the plan doc, landing page and repo.' })); return; }
+    ls.forEach(function (l) {
+      var safe = /^https?:\/\//i.test(l.url || '') ? l.url : null;
+      ul.appendChild(el('li', null, [
+        el('div', { style: 'min-width:0' }, [safe ? el('a', { href: safe, target: '_blank', rel: 'noopener', text: l.label }) : el('span', { text: l.label }), l.kind ? el('div', { cls: 'k', text: l.kind }) : null]),
+        state.canWrite ? el('button', { cls: 'btn ghost', type: 'button', 'aria-label': 'Remove link ' + l.label, text: 'Remove', onclick: function () { write(function () { return db.collection('links').doc(l.id).delete(); }); } }) : null
+      ]));
+    });
+  }
+
+  function renderAll() {
+    if (state.ready.w && state.webinars.length && !current()) {
+      var up = state.webinars.slice().sort(sortW).find(function (w) { return Date.parse(w.startISO) > Date.now() - 864e5; });
+      state.sel = (up || state.webinars[0]).id;
+    }
+    renderRail(); if (!editorOpen) { renderWebinar(); } renderTasks(); renderDue(); renderLinks();
+  }
+  function select(id) { state.sel = id; closeEditor(); try { localStorage.setItem('bh-hub-sel', id); } catch (e) {} renderAll(); }
+
+  /* ---------- editor ---------- */
+  var editorOpen = false, editingNew = false;
+  function openEditor(w) {
+    editorOpen = true; editingNew = !w;
+    var tz = (w && w.tz) || 'America/New_York', p = w && w.startISO ? partsIn(w.startISO, tz) : { date: addDays(todayISO(), 30), time: '11:00' };
+    $('e-name').value = w ? w.name || '' : ''; $('e-status').value = (w && w.status) || 'Planning'; $('e-region').value = (w && w.region) || '';
+    $('e-date').value = p.date; $('e-time').value = p.time; $('e-tz').value = tz; $('e-dur').value = (w && w.durationMin) || 60;
+    $('e-campaign').value = (w && w.campaign) || ''; $('e-broadcast').value = (w && w.broadcastId) || '';
+    [['e-target', 'targetRegs'], ['e-regs', 'regs'], ['e-att', 'attended'], ['e-ass', 'assessments'], ['e-sql', 'sqls']].forEach(function (x) { $(x[0]).value = w && w[x[1]] != null ? w[x[1]] : ''; });
+    $('e-notes').value = (w && w.notes) || '';
+    $('delWrap').hidden = editingNew; $('e-msg').textContent = '';
+    $('wempty').hidden = true; $('wbody').hidden = false; $('editor').hidden = false;
+    if (editingNew) { $('wname').textContent = 'New webinar'; $('wtimes').textContent = ''; $('wfacts').textContent = ''; $('kpis').textContent = ''; $('wstatus').textContent = 'Draft'; $('wcountdown').textContent = ''; $('tpanel').hidden = true; $('lpanel').hidden = true; }
+    $('e-name').focus();
+  }
+  function closeEditor() { editorOpen = false; $('editor').hidden = true; resetDel(); }
+  function newWebinar() { state.sel = null; renderRail(); openEditor(null); }
+  $('editBtn').addEventListener('click', function () { var w = current(); if (w) { openEditor(w); } });
+  $('e-cancel').addEventListener('click', function () { closeEditor(); renderAll(); });
+  $('editor').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var tz = $('e-tz').value;
+    var body = {
+      name: $('e-name').value.trim(), status: $('e-status').value, region: $('e-region').value.trim(),
+      startISO: localToUTC($('e-date').value, $('e-time').value, tz), tz: tz, durationMin: num($('e-dur').value),
+      campaign: $('e-campaign').value.trim(), broadcastId: $('e-broadcast').value.trim(),
+      targetRegs: num($('e-target').value), regs: num($('e-regs').value), attended: num($('e-att').value),
+      assessments: num($('e-ass').value), sqls: num($('e-sql').value),
+      notes: $('e-notes').value.trim()
+    };
+    if (!body.name) { $('e-msg').textContent = 'Give the webinar a name.'; return; }
+    var w = current();
+    write(async function () {
+      if (editingNew || !w) { var ref = db.collection('webinars').doc(); await ref.set(body); state.sel = ref.id; try { localStorage.setItem('bh-hub-sel', ref.id); } catch (e2) {} }
+      else { await db.collection('webinars').doc(w.id).update(body); }
+      closeEditor(); renderAll();
+    });
+  });
+  function resetDel() { var wrap = $('delWrap'); wrap.textContent = ''; wrap.appendChild(el('button', { cls: 'btn danger ghost', type: 'button', id: 'e-del', text: 'Delete webinar', onclick: askDel })); }
+  function askDel() {
+    var w = current(); if (!w) { return; }
+    var n = tasksOf(w.id).length, wrap = $('delWrap'); wrap.textContent = '';
+    wrap.appendChild(el('span', { cls: 'note', text: 'Delete this webinar, its ' + n + ' tasks and its links?' }));
+    wrap.appendChild(el('button', { cls: 'btn danger', type: 'button', text: 'Yes, delete', onclick: function () {
+      write(async function () {
+        var ts = tasksOf(w.id), ls = state.links.filter(function (l) { return l.webinarId === w.id; });
+        for (var i = 0; i < ts.length; i++) { await db.collection('tasks').doc(ts[i].id).delete(); }
+        for (var j = 0; j < ls.length; j++) { await db.collection('links').doc(ls[j].id).delete(); }
+        await db.collection('webinars').doc(w.id).delete();
+        state.sel = null; closeEditor(); renderAll();
+      });
+    } }));
+    wrap.appendChild(el('button', { cls: 'btn ghost', type: 'button', text: 'Keep', onclick: resetDel }));
+  }
+  $('e-del').addEventListener('click', askDel);
+
+  /* ---------- forms ---------- */
+  $('filters').addEventListener('click', function (e) { var c = e.target.closest('.chip'); if (c) { state.filter = c.dataset.f; renderTasks(); } });
+  $('wsFilter').addEventListener('change', function () { state.ws = this.value; renderTasks(); });
+  $('addTask').addEventListener('submit', function (e) {
+    e.preventDefault(); var w = current(); if (!w) { return; }
+    var body = { webinarId: w.id, title: $('nt-title').value.trim(), workstream: $('nt-ws').value.trim(), owner: $('nt-owner').value.trim(), due: $('nt-due').value, status: 'Not started', order: Date.now() };
+    if (!body.title) { return; }
+    write(async function () { await db.collection('tasks').add(body); $('nt-title').value = ''; $('nt-title').focus(); });
+  });
+  $('addLink').addEventListener('submit', function (e) {
+    e.preventDefault(); var w = current(); if (!w) { return; }
+    var url = $('nl-url').value.trim(); if (!/^https?:\/\//i.test(url)) { showError('Links must start with https://'); return; }
+    var body = { webinarId: w.id, label: $('nl-label').value.trim(), kind: $('nl-kind').value.trim(), url: url, order: Date.now() };
+    write(async function () { await db.collection('links').add(body); $('nl-label').value = ''; $('nl-kind').value = ''; $('nl-url').value = ''; });
+  });
+
+  function applyWriteMode() {
+    Array.prototype.forEach.call(document.querySelectorAll('.edit-only'), function (n) { n.hidden = !state.canWrite || !db; });
+    renderAll();
+  }
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement, mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  function effectiveTheme() { var t = root.getAttribute('data-theme'); return t === 'dark' || t === 'light' ? t : (mq && mq.matches ? 'dark' : 'light'); }
+  function paintThemeBtn() {
+    var dark = effectiveTheme() === 'dark';
+    $('themeLabel').textContent = dark ? 'Light' : 'Dark';
+    $('themeBtn').setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    $('icoSun').hidden = !dark; $('icoMoon').hidden = dark;
+  }
+  try { var saved = localStorage.getItem('bh-hub-theme'); if (saved === 'dark' || saved === 'light') { root.setAttribute('data-theme', saved); } } catch (e) {}
+  $('themeBtn').addEventListener('click', function () {
+    var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('bh-hub-theme', next); } catch (e) {}
+    paintThemeBtn();
+  });
+  if (mq && mq.addEventListener) { mq.addEventListener('change', paintThemeBtn); }
+  paintThemeBtn();
+
+  /* ---------- data ---------- */
+  renderAll();
+  (async function boot() {
+    db = window.claude && window.claude.use ? await window.claude.use('db') : null;
+    if (!db) {
+      // Static hosting (GitHub Pages): read-only, data comes from data.json next to this page.
+      state.canWrite = false;
+      try {
+        var res = await fetch('data.json', { cache: 'no-store' });
+        if (!res.ok) { throw new Error(res.status); }
+        var data = await res.json();
+        state.webinars = data.webinars || []; state.tasks = data.tasks || []; state.links = data.links || [];
+      } catch (e) { state.loadErr = 'Could not load data.json. Check it sits next to index.html and is valid JSON.'; }
+      state.ready = { w: true, t: true, l: true };
+      applyWriteMode(); return;
+    }
+    var user = await window.claude.use('user');
+    if (user) { try { var cw = await user.can('data.write'); if (cw === false) { state.canWrite = false; } } catch (e) {} }
+    applyWriteMode();
+    function sub(name, key) {
+      db.collection(name).onSnapshot(function (snap) {
+        state[name] = snap.docs.map(function (d) { var o = Object.assign({}, d.data()); o.id = d.id; return o; });
+        state.ready[key] = true; renderAll();
+      }, function () { showError('Lost the live connection to the hub. Reload the page to reconnect.'); });
+    }
+    sub('webinars', 'w'); sub('tasks', 't'); sub('links', 'l');
+  })();
+})();
+</script>
+</body>
+</html>
